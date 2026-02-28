@@ -1,0 +1,5 @@
+# CI pipeline: lint, typecheck, unit tests, e2e tests
+name: CI
+on:
+  pull_request:
+    branches: [main]

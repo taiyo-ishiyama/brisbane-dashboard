@@ -1,0 +1,1 @@
+-- Create snapshots table for caching normalised JSON per section
