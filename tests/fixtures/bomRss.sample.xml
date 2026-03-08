@@ -1,2 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel></channel></rss>
+<rss version="2.0">
+  <channel>
+    <title>Bureau of Meteorology - Queensland Warnings Summary</title>
+    <link>http://www.bom.gov.au/qld/warnings/</link>
+    <description>Current warnings for Queensland</description>
+    <lastBuildDate>Sun, 08 Mar 2026 16:55:00 +1000</lastBuildDate>
+    <item>
+      <title>08/16:55 EST Moderate Flood Warning for the Mary River</title>
+      <link>http://www.bom.gov.au/qld/warnings/flood/mary.shtml</link>
+      <pubDate>Sun, 08 Mar 2026 16:55:00 +1000</pubDate>
+      <guid>http://www.bom.gov.au/qld/warnings/flood/mary.shtml</guid>
+    </item>
+    <item>
+      <title>08/14:30 EST Severe Thunderstorm Warning for Southeast Queensland</title>
+      <link>http://www.bom.gov.au/qld/warnings/thunderstorm/seq.shtml</link>
+      <pubDate>Sun, 08 Mar 2026 14:30:00 +1000</pubDate>
+      <guid>http://www.bom.gov.au/qld/warnings/thunderstorm/seq.shtml</guid>
+    </item>
+    <item>
+      <title>08/12:00 EST Minor Flood Warning for Bremer River</title>
+      <link>http://www.bom.gov.au/qld/warnings/flood/bremer.shtml</link>
+      <pubDate>Sun, 08 Mar 2026 12:00:00 +1000</pubDate>
+      <guid>http://www.bom.gov.au/qld/warnings/flood/bremer.shtml</guid>
+    </item>
+    <item>
+      <title>08/10:15 EST Cancellation of Flood Watch for the Brisbane River</title>
+      <link>http://www.bom.gov.au/qld/warnings/flood/brisbane.shtml</link>
+      <pubDate>Sun, 08 Mar 2026 10:15:00 +1000</pubDate>
+      <guid>http://www.bom.gov.au/qld/warnings/flood/brisbane.shtml</guid>
+    </item>
+  </channel>
+</rss>

@@ -1,3 +1,41 @@
-export async function POST() {
-  return Response.json({});
+import { verifyCronSecret } from "@/lib/security/verifyCronSecret";
+import { fetchBomWarnings, fetchQldDisasterAlerts } from "@/lib/services/alerts.service";
+import { fetchTransitAlerts } from "@/lib/services/transit.service";
+import { upsertSnapshot } from "@/lib/db/snapshots.repo";
+import { Section } from "@/config/constants";
+
+export async function POST(request: Request) {
+  const unauthorized = verifyCronSecret(request);
+  if (unauthorized) return unauthorized;
+
+  const completed: string[] = [];
+  const errors: string[] = [];
+
+  const results = await Promise.allSettled([
+    fetchBomWarnings().then(async (warnings) => {
+      await upsertSnapshot(Section.BomWarnings, warnings);
+      completed.push(Section.BomWarnings);
+    }),
+    fetchQldDisasterAlerts().then(async (alerts) => {
+      await upsertSnapshot(Section.Emergency, alerts);
+      completed.push(Section.Emergency);
+    }),
+    fetchTransitAlerts().then(async (transit) => {
+      await upsertSnapshot(Section.Transit, transit);
+      completed.push(Section.Transit);
+    }),
+  ]);
+
+  for (const r of results) {
+    if (r.status === "rejected") {
+      console.error("[cron/hourly]", r.reason);
+      errors.push(String(r.reason));
+    }
+  }
+
+  const ok = errors.length === 0;
+  return Response.json(
+    { ok, sections: completed, errors: ok ? undefined : errors, fetchedAt: new Date().toISOString() },
+    { status: ok ? 200 : 207 },
+  );
 }

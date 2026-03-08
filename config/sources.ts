@@ -9,9 +9,16 @@ export const OPEN_METEO_URL =
   `wind_speed_10m_max,wind_direction_10m_dominant` +
   `&timezone=Australia/Brisbane`;
 
+// BCC Events – OpenDataSoft v2.1 API
+// Date range params are appended dynamically by the service
+export const BCC_EVENTS_BASE_URL =
+  "https://data.brisbane.qld.gov.au/api/explore/v2.1/catalog/datasets/brisbane-city-council-events/records";
+
 // Placeholder URLs for future data sources
-export const BOM_RSS_URL = "TODO";
-export const BCC_EVENTS_URL = "TODO";
+export const BOM_RSS_URL =
+  "https://reg.bom.gov.au/fwo/IDZ00056.warnings_qld.xml";
 export const QLD_TRAFFIC_URL = "TODO";
-export const QLD_DISASTER_RSS_URL = "TODO";
-export const TRANSLINK_GTFSRT_URL = "TODO";
+export const QLD_DISASTER_RSS_URL =
+  "https://publiccontent-qld-alerts.s3.ap-southeast-2.amazonaws.com/content/Feeds/QLDEmergencyAlerts/QLDEmergencyAlerts.xml";
+export const TRANSLINK_GTFSRT_URL =
+  "https://gtfsrt.api.translink.com.au/api/realtime/SEQ/alerts";

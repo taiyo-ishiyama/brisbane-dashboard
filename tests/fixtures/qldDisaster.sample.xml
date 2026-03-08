@@ -1,2 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"><channel></channel></rss>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss">
+  <title>QLD Emergency Alerts</title>
+  <subtitle>Queensland Police Service - Emergency Alerts</subtitle>
+  <updated>2026-03-08T06:30:00Z</updated>
+  <id>urn:qld:emergency:alerts</id>
+  <entry>
+    <title>Emergency Warning - Bushfire - Springfield, Ipswich Region</title>
+    <summary>An Emergency Warning has been issued for a fast-moving bushfire in the Springfield area. Residents should leave immediately if safe to do so.</summary>
+    <link href="https://www.qld.gov.au/emergency/alerts/bushfire-springfield" />
+    <id>urn:qld:alert:2026-0308-001</id>
+    <updated>2026-03-08T06:30:00Z</updated>
+    <georss:point>-27.66 152.91</georss:point>
+  </entry>
+  <entry>
+    <title>Watch and Act - Flood - Bremer River, Ipswich</title>
+    <summary>A Watch and Act alert has been issued for rising water levels on the Bremer River. Residents in low-lying areas should prepare to evacuate.</summary>
+    <link href="https://www.qld.gov.au/emergency/alerts/flood-bremer-river" />
+    <id>urn:qld:alert:2026-0308-002</id>
+    <updated>2026-03-08T05:15:00Z</updated>
+    <georss:point>-27.62 152.76</georss:point>
+  </entry>
+  <entry>
+    <title>Advice - Severe Weather - Southeast Queensland</title>
+    <summary>Severe thunderstorms are forecast for Southeast Queensland this afternoon. Damaging winds and heavy rainfall expected.</summary>
+    <link href="https://www.qld.gov.au/emergency/alerts/severe-weather-seq" />
+    <id>urn:qld:alert:2026-0308-003</id>
+    <updated>2026-03-08T03:00:00Z</updated>
+  </entry>
+</feed>
