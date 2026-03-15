@@ -4,6 +4,7 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   CRON_SECRET: z.string().min(1),
+  QLD_TRAFFIC_API_KEY: z.string().min(1),
 });
 
 type ServerEnv = z.infer<typeof envSchema>;

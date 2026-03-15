@@ -17,7 +17,8 @@ export const BCC_EVENTS_BASE_URL =
 // Placeholder URLs for future data sources
 export const BOM_RSS_URL =
   "https://reg.bom.gov.au/fwo/IDZ00056.warnings_qld.xml";
-export const QLD_TRAFFIC_URL = "TODO";
+export const QLD_TRAFFIC_BASE_URL =
+  "https://api.qldtraffic.qld.gov.au/v2/events";
 export const QLD_DISASTER_RSS_URL =
   "https://publiccontent-qld-alerts.s3.ap-southeast-2.amazonaws.com/content/Feeds/QLDEmergencyAlerts/QLDEmergencyAlerts.xml";
 export const TRANSLINK_GTFSRT_URL =

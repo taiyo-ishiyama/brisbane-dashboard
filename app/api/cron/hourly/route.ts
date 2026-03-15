@@ -1,6 +1,7 @@
 import { verifyCronSecret } from "@/lib/security/verifyCronSecret";
 import { fetchBomWarnings, fetchQldDisasterAlerts } from "@/lib/services/alerts.service";
 import { fetchTransitAlerts } from "@/lib/services/transit.service";
+import { fetchTraffic } from "@/lib/services/traffic.service";
 import { upsertSnapshot } from "@/lib/db/snapshots.repo";
 import { Section } from "@/config/constants";
 
@@ -23,6 +24,10 @@ export async function POST(request: Request) {
     fetchTransitAlerts().then(async (transit) => {
       await upsertSnapshot(Section.Transit, transit);
       completed.push(Section.Transit);
+    }),
+    fetchTraffic().then(async (traffic) => {
+      await upsertSnapshot(Section.Traffic, traffic);
+      completed.push(Section.Traffic);
     }),
   ]);
 
