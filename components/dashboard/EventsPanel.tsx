@@ -46,6 +46,8 @@ const FILTER_CATEGORIES: EventCategory[] = [
   "arts",
   "food",
   "tech",
+  "community",
+  "other",
 ];
 
 function formatEventTime(isoStr: string) {
@@ -133,6 +135,7 @@ interface EventsPanelProps {
 export default function EventsPanel({ data }: EventsPanelProps) {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState<EventCategory | null>(null);
+  const [freeOnly, setFreeOnly] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   const filtered = data.events.filter((e) => {
@@ -142,7 +145,8 @@ export default function EventsPanel({ data }: EventsPanelProps) {
       e.descriptionShort?.toLowerCase().includes(search.toLowerCase());
     const matchesFilter =
       !activeFilter || e.categories.includes(activeFilter);
-    return matchesSearch && matchesFilter;
+    const matchesFree = !freeOnly || e.isFree;
+    return matchesSearch && matchesFilter && matchesFree;
   });
 
   const visible = expanded ? filtered : filtered.slice(0, INITIAL_COUNT);
@@ -169,6 +173,32 @@ export default function EventsPanel({ data }: EventsPanelProps) {
         </div>
 
         <div className="flex gap-2 overflow-x-auto pb-1">
+          <button
+            onClick={() => {
+              setSearch("");
+              setActiveFilter(null);
+              setFreeOnly(false);
+            }}
+            aria-pressed={!search && !activeFilter && !freeOnly}
+            className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+              !search && !activeFilter && !freeOnly
+                ? "border-primary-300 bg-primary-50 text-primary-700"
+                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setFreeOnly(!freeOnly)}
+            aria-pressed={freeOnly}
+            className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+              freeOnly
+                ? "border-green-200 bg-green-100 text-green-700"
+                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            Free
+          </button>
           {FILTER_CATEGORIES.map((cat) => (
             <button
               key={cat}

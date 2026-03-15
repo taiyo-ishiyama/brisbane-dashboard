@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "data.brisbane.qld.gov.au",
       },
+      {
+        protocol: "https",
+        hostname: "www.trumba.com",
+      },
     ],
   },
 };
