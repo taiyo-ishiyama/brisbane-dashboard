@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentType } from "react";
 import {
   Car,
   TrainFront,
@@ -71,7 +71,7 @@ function TrafficColumn({ data }: { data: TrafficIncidentsFeed }) {
       {data.incidents.length === 0 ? (
         <div className="flex items-center gap-2 rounded-lg border border-green-100 bg-green-50 px-3 py-3">
           <ShieldCheck className="h-4 w-4 text-green-700" />
-          <Body as="span" className="!text-green-700">All clear</Body>
+          <Body as="span" className="text-green-700!">All clear</Body>
         </div>
       ) : (
         <>
@@ -106,7 +106,7 @@ function TrafficColumn({ data }: { data: TrafficIncidentsFeed }) {
 
 /* ---------- Transit column ---------- */
 
-const modeIcons: Record<TransitMode, React.ComponentType<{ className?: string }>> = {
+const modeIcons: Record<TransitMode, ComponentType<{ className?: string }>> = {
   train: TrainFront,
   bus: Bus,
   ferry: Ship,
@@ -131,8 +131,6 @@ const modeColours: Record<TransitMode, string> = {
 };
 
 function TransitColumn({ data }: { data: TransitAlertsFeed }) {
-  const alertCount = data.alerts.length;
-
   /* Collect unique modes from alerts */
   const displayModes: TransitMode[] = ["train", "bus", "ferry", "tram"];
   const alertsByMode = displayModes.reduce(
@@ -142,6 +140,11 @@ function TransitColumn({ data }: { data: TransitAlertsFeed }) {
     },
     {} as Record<TransitMode, TransitAlert[]>
   );
+
+  /* Count only alerts that belong to at least one displayed mode */
+  const alertCount = data.alerts.filter((a) =>
+    a.modes?.some((m) => displayModes.includes(m))
+  ).length;
 
   return (
     <div>
@@ -165,7 +168,7 @@ function TransitColumn({ data }: { data: TransitAlertsFeed }) {
               className={`flex flex-col items-center gap-1.5 rounded-lg border p-3 ${modeColours[mode]}`}
             >
               <Icon className="h-6 w-6" />
-              <Caption className="!font-medium">{modeLabels[mode]}</Caption>
+              <Caption className="font-medium!">{modeLabels[mode]}</Caption>
               {count > 0 && (
                 <Label className="rounded-full bg-white/60 px-1.5 py-0.5">
                   {count} alert{count !== 1 ? "s" : ""}

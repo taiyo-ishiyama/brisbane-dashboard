@@ -7,18 +7,37 @@ interface LastUpdatedProps {
   fetchedAt: string;
 }
 
-export default function LastUpdated({ fetchedAt }: LastUpdatedProps) {
-  const time = new Date(fetchedAt).toLocaleTimeString("en-AU", {
+function formatFetchedAt(fetchedAt: string): string {
+  const fetched = new Date(fetchedAt);
+  const now = new Date();
+
+  const brisbaneDate = (d: Date) =>
+    d.toLocaleDateString("en-AU", { timeZone: "Australia/Brisbane", year: "numeric", month: "2-digit", day: "2-digit" });
+
+  const time = fetched.toLocaleTimeString("en-AU", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
     timeZone: "Australia/Brisbane",
   });
 
+  if (brisbaneDate(fetched) !== brisbaneDate(now)) {
+    const date = fetched.toLocaleDateString("en-AU", {
+      day: "numeric",
+      month: "short",
+      timeZone: "Australia/Brisbane",
+    });
+    return `${date}, ${time}`;
+  }
+
+  return time;
+}
+
+export default function LastUpdated({ fetchedAt }: LastUpdatedProps) {
   return (
     <Muted className="inline-flex items-center gap-1">
       <Clock className="h-3 w-3" />
-      Last updated {time}
+      Last updated {formatFetchedAt(fetchedAt)}
     </Muted>
   );
 }

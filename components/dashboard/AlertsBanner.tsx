@@ -31,7 +31,7 @@ export default function AlertsBanner({ data }: AlertsBannerProps) {
       <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3">
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-green-700" />
-          <Body as="span" className="!text-green-700">
+          <Body as="span" className="text-green-700!">
             No active emergency alerts
           </Body>
         </div>
@@ -56,16 +56,16 @@ export default function AlertsBanner({ data }: AlertsBannerProps) {
               <div className="flex items-start gap-3">
                 <AlertTriangle className={`mt-0.5 h-5 w-5 shrink-0 ${iconStyle}`} />
                 <div>
-                  <CardTitle as="p" className="!text-inherit">
+                  <CardTitle as="p" className="text-inherit!">
                     {alert.title}
                   </CardTitle>
                   {alert.summary && (
-                    <Body className="mt-0.5 opacity-80 !text-inherit">
+                    <Body className="mt-0.5 opacity-80 text-inherit!">
                       {alert.summary}
                     </Body>
                   )}
                   {alert.areas && alert.areas.length > 0 && (
-                    <Caption as="p" className="mt-1 opacity-60 !text-inherit">
+                    <Caption as="p" className="mt-1 opacity-60 text-inherit!">
                       Areas: {alert.areas.join(", ")}
                     </Caption>
                   )}

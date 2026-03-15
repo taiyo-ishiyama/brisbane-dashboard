@@ -65,6 +65,8 @@ function mapEventType(eventType: string): TrafficType {
       return "congestion";
     case "flooding":
       return "flooding";
+    case "closure":
+      return "closure";
     default:
       return "other";
   }
@@ -137,6 +139,12 @@ function isBrisbaneMetro(feature: QldTrafficFeature): boolean {
   return lga.split("/").some((part) => BRISBANE_METRO_LGAS.has(part.trim()));
 }
 
+function safeISOString(value: string | null | undefined): string | undefined {
+  if (!value) return undefined;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? undefined : d.toISOString();
+}
+
 function toTrafficIncident(feature: QldTrafficFeature): TrafficIncident {
   const props = feature.properties;
 
@@ -149,12 +157,8 @@ function toTrafficIncident(feature: QldTrafficFeature): TrafficIncident {
     locationText: props.road_summary?.road_name ?? undefined,
     suburb: props.road_summary?.locality ?? undefined,
     point: extractPoint(feature.geometry),
-    startedAt: props.duration?.start
-      ? new Date(props.duration.start).toISOString()
-      : undefined,
-    updatedAt: props.last_updated
-      ? new Date(props.last_updated).toISOString()
-      : undefined,
+    startedAt: safeISOString(props.duration?.start),
+    updatedAt: safeISOString(props.last_updated),
     sourceUrl: props.url ?? undefined,
   };
 }

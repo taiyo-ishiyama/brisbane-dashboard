@@ -159,6 +159,7 @@ export default function EventsPanel({ data }: EventsPanelProps) {
           <input
             type="text"
             placeholder="Search events..."
+            aria-label="Search events"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-700 placeholder-slate-400 outline-none focus:border-primary-300 focus:ring-2 focus:ring-primary-100 sm:w-64"
@@ -172,6 +173,7 @@ export default function EventsPanel({ data }: EventsPanelProps) {
               onClick={() =>
                 setActiveFilter(activeFilter === cat ? null : cat)
               }
+              aria-pressed={activeFilter === cat}
               className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                 activeFilter === cat
                   ? CATEGORY_COLOURS[cat]
@@ -192,7 +194,7 @@ export default function EventsPanel({ data }: EventsPanelProps) {
           ))}
         </div>
       ) : (
-        <Body className="py-8 text-center !text-slate-400">
+        <Body className="py-8 text-center text-slate-400!">
           No events match your search.
         </Body>
       )}
@@ -202,6 +204,7 @@ export default function EventsPanel({ data }: EventsPanelProps) {
         <div className="mt-4 text-center">
           <button
             onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
             className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
           >
             {expanded ? (

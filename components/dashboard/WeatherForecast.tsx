@@ -78,7 +78,7 @@ function DayCard({ day }: { day: ForecastDay }) {
           : "border-slate-200 bg-white hover:shadow-sm"
       }`}
     >
-      <Caption className={`!font-semibold ${today ? "!text-primary-600" : "!text-slate-500"}`}>
+      <Caption className={`font-semibold! ${today ? "text-primary-600!" : "text-slate-500!"}`}>
         {today ? "Today" : dayName}
       </Caption>
       <Tiny>{date}</Tiny>
@@ -91,7 +91,7 @@ function DayCard({ day }: { day: ForecastDay }) {
       </div>
 
       {day.precipitationChancePct != null && day.precipitationChancePct > 0 && (
-        <Caption className="mt-1 inline-flex items-center gap-0.5 !text-blue-500">
+        <Caption className="mt-1 inline-flex items-center gap-0.5 text-blue-500!">
           <Droplets className="h-3 w-3" />
           {day.precipitationChancePct}%
         </Caption>

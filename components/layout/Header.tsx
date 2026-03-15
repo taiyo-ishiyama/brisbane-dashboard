@@ -34,7 +34,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <PageTitle>Brisbane Local Dashboard</PageTitle>
         <div className="flex items-center gap-2 text-sm text-slate-600">
-          <Body as="span" className="hidden sm:inline !text-slate-600">
+          <Body as="span" className="hidden sm:inline text-slate-600!">
             Brisbane time&nbsp;&mdash;
           </Body>
           <span className="inline-flex items-center gap-1.5 font-mono font-medium tabular-nums text-slate-900">

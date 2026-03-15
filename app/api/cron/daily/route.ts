@@ -26,13 +26,14 @@ export async function POST(request: Request) {
   for (const r of results) {
     if (r.status === "rejected") {
       console.error("[cron/daily]", r.reason);
-      errors.push(String(r.reason));
+      errors.push("Internal refresh error");
     }
   }
 
   const ok = errors.length === 0;
+  const allFailed = completed.length === 0 && errors.length > 0;
   return Response.json(
     { ok, sections: completed, errors: ok ? undefined : errors, fetchedAt: new Date().toISOString() },
-    { status: ok ? 200 : 207 },
+    { status: ok ? 200 : allFailed ? 500 : 207 },
   );
 }

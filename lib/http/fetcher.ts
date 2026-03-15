@@ -1,6 +1,12 @@
 import { FETCH_TIMEOUT_MS, FETCH_RETRIES } from "@/config/constants";
 import { FetchError } from "./errors";
 
+const RETRYABLE_STATUS_CODES = new Set([429, 500, 502, 503, 504]);
+
+function isRetryable(err: unknown): boolean {
+  return err instanceof FetchError && RETRYABLE_STATUS_CODES.has(err.status);
+}
+
 export async function fetchJson<T>(
   url: string,
   opts?: { timeoutMs?: number; retries?: number },
@@ -24,7 +30,7 @@ export async function fetchJson<T>(
       return (await res.json()) as T;
     } catch (err) {
       lastError = err;
-      if (err instanceof FetchError) throw err;
+      if (err instanceof FetchError && !isRetryable(err)) throw err;
       if (attempt < retries) continue;
     } finally {
       clearTimeout(timer);
@@ -57,7 +63,7 @@ export async function fetchBuffer(
       return new Uint8Array(await res.arrayBuffer());
     } catch (err) {
       lastError = err;
-      if (err instanceof FetchError) throw err;
+      if (err instanceof FetchError && !isRetryable(err)) throw err;
       if (attempt < retries) continue;
     } finally {
       clearTimeout(timer);
@@ -90,7 +96,7 @@ export async function fetchText(
       return await res.text();
     } catch (err) {
       lastError = err;
-      if (err instanceof FetchError) throw err;
+      if (err instanceof FetchError && !isRetryable(err)) throw err;
       if (attempt < retries) continue;
     } finally {
       clearTimeout(timer);
