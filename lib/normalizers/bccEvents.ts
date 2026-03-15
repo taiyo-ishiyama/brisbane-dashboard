@@ -31,6 +31,17 @@ function extractEventId(webLink?: string): string {
   return match ? match[1] : crypto.randomUUID();
 }
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function buildEventUrl(title: string, eventId: string): string {
+  return `https://www.brisbane.qld.gov.au/events/${slugify(title)}/${eventId}`;
+}
+
 function mapCategories(record: BccEventRecord): EventCategory[] {
   const tags = [
     ...(record.event_type ?? []),
@@ -67,8 +78,9 @@ function truncateDescription(desc?: string, maxLen = 150): string | undefined {
 }
 
 function toRecord(record: BccEventRecord): EventItem {
+  const id = extractEventId(record.web_link);
   return {
-    id: extractEventId(record.web_link),
+    id,
     title: record.subject,
     descriptionShort: truncateDescription(record.description),
     startAt: record.start_datetime,
@@ -79,7 +91,7 @@ function toRecord(record: BccEventRecord): EventItem {
     point: record.geolocation
       ? { lat: record.geolocation.lat, lon: record.geolocation.lon }
       : undefined,
-    sourceUrl: record.web_link ?? undefined,
+    sourceUrl: record.web_link ? buildEventUrl(record.subject, id) : undefined,
     categories: mapCategories(record),
     isFree: isFree(record.cost),
     imageUrl: record.eventimage ?? undefined,

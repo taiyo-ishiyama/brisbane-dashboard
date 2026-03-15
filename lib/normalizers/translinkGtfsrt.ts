@@ -34,7 +34,7 @@ function mapSeverity(alert: transit_realtime.IAlert): Severity {
   }
 }
 
-function mapRouteType(routeType: number | null | undefined): TransitMode {
+function mapRouteType(routeType: number): TransitMode {
   switch (routeType) {
     case 0:
       return "tram";
@@ -48,6 +48,22 @@ function mapRouteType(routeType: number | null | undefined): TransitMode {
     default:
       return "other";
   }
+}
+
+// TransLink's SEQ GTFS-RT feed rarely sets routeType, so infer mode from routeId.
+// Train routeIds use 2-4 letter station-pair codes (e.g. "BRGY-4727").
+// Bus routeIds use numeric or R-prefixed codes (e.g. "130-4762", "R348-4730").
+// Tram (G:link) uses "M2".
+// Ferry uses "F-" prefix or numeric codes in the 500-range.
+const TRAIN_PREFIX_RE = /^[A-Z]{2,4}-/;
+const BUS_PREFIX_RE = /^(?:\d|R\d)/;
+const TRAM_PREFIX_RE = /^M\d/;
+
+function inferModeFromRouteId(routeId: string): TransitMode | undefined {
+  if (TRAIN_PREFIX_RE.test(routeId)) return "train";
+  if (TRAM_PREFIX_RE.test(routeId)) return "tram";
+  if (BUS_PREFIX_RE.test(routeId)) return "bus";
+  return undefined;
 }
 
 const SEVERITY_ORDER: Record<Severity, number> = {
@@ -84,7 +100,14 @@ function toTransitAlert(entity: transit_realtime.IFeedEntity): TransitAlert | nu
   const stops: string[] = [];
 
   for (const ie of informedEntities) {
-    if (ie.routeType != null) modesSet.add(mapRouteType(ie.routeType));
+    // protobuf-js returns 0 (tram) via prototype for unset numeric fields,
+    // so use hasOwnProperty to check if routeType was actually in the wire data
+    if (Object.prototype.hasOwnProperty.call(ie, "routeType")) {
+      modesSet.add(mapRouteType(ie.routeType!));
+    } else if (ie.routeId) {
+      const inferred = inferModeFromRouteId(ie.routeId);
+      if (inferred) modesSet.add(inferred);
+    }
     if (ie.routeId) routes.push(ie.routeId);
     if (ie.stopId) stops.push(ie.stopId);
   }
