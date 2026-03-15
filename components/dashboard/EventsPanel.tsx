@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import {
   Calendar,
   MapPin,
@@ -71,10 +72,11 @@ function EventCard({ event }: { event: EventItem }) {
       {/* Placeholder image area */}
       <div className="relative h-36 bg-gradient-to-br from-slate-100 to-slate-200">
         {event.imageUrl && (
-          <img
+          <Image
             src={event.imageUrl}
             alt={event.title}
-            className="h-full w-full object-cover"
+            fill
+            className="object-cover"
           />
         )}
         {/* Category tags */}
