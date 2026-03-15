@@ -1,0 +1,98 @@
+{
+  "header": {
+    "gtfsRealtimeVersion": "2.0",
+    "incrementality": 0,
+    "timestamp": 1709942400
+  },
+  "entity": [
+    {
+      "id": "alert-001",
+      "alert": {
+        "activePeriod": [
+          { "start": 1709942400, "end": 1709985600 }
+        ],
+        "informedEntity": [
+          { "routeId": "IPSW", "routeType": 2 },
+          { "routeId": "SHOR", "routeType": 2 }
+        ],
+        "cause": 10,
+        "effect": 3,
+        "headerText": {
+          "translation": [
+            { "text": "Significant delays on Ipswich and Shorncliffe lines", "language": "en" }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            { "text": "Due to track maintenance between Roma Street and Milton, expect delays of up to 20 minutes on Ipswich and Shorncliffe lines.", "language": "en" }
+          ]
+        },
+        "severityLevel": 3,
+        "url": {
+          "translation": [
+            { "text": "https://translink.com.au/service-updates", "language": "en" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alert-002",
+      "alert": {
+        "activePeriod": [
+          { "start": 1709942400, "end": 1709971200 }
+        ],
+        "informedEntity": [
+          { "routeId": "375", "routeType": 3 },
+          { "routeId": "376", "routeType": 3 }
+        ],
+        "cause": 10,
+        "effect": 4,
+        "headerText": {
+          "translation": [
+            { "text": "Bus routes 375 and 376 detoured via Caxton Street", "language": "en" }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            { "text": "Due to road works on Given Terrace, routes 375 and 376 are detoured via Caxton Street. Stops on Given Terrace are temporarily relocated.", "language": "en" }
+          ]
+        },
+        "severityLevel": 2,
+        "url": {
+          "translation": [
+            { "text": "https://translink.com.au/service-updates", "language": "en" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alert-003",
+      "alert": {
+        "activePeriod": [
+          { "start": 1709956800, "end": 1709971200 }
+        ],
+        "informedEntity": [
+          { "routeId": "NFRY", "routeType": 4 }
+        ],
+        "cause": 9,
+        "effect": 1,
+        "headerText": {
+          "translation": [
+            { "text": "No ferry service: North Shore to Teneriffe", "language": "en" }
+          ]
+        },
+        "descriptionText": {
+          "translation": [
+            { "text": "The North Shore to Teneriffe CityCat service is suspended for scheduled pontoon maintenance. Please use alternative bus services.", "language": "en" }
+          ]
+        },
+        "severityLevel": 4,
+        "url": {
+          "translation": [
+            { "text": "https://translink.com.au/service-updates", "language": "en" }
+          ]
+        }
+      }
+    }
+  ]
+}
