@@ -73,6 +73,15 @@ export default function HomePage() {
 function LoadingSkeleton() {
   return (
     <div className="space-y-8">
+      {/* Spinner */}
+      <div className="flex items-center justify-center gap-3 py-2">
+        <svg className="size-5 animate-spin text-primary-500" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v3a5 5 0 00-5 5H4z" />
+        </svg>
+        <span className="text-sm text-stone-400">Loading dashboard&hellip;</span>
+      </div>
+
       {/* Alert skeleton */}
       <div className="skeleton h-12 rounded-xl" />
 
