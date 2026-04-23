@@ -35,9 +35,9 @@ function formatFetchedAt(fetchedAt: string): string {
 
 export default function LastUpdated({ fetchedAt }: LastUpdatedProps) {
   return (
-    <Muted className="inline-flex items-center gap-1">
-      <Clock className="h-3 w-3" />
-      Last updated {formatFetchedAt(fetchedAt)}
+    <Muted className="inline-flex items-center gap-1 tabular-nums">
+      <Clock className="size-3" />
+      {formatFetchedAt(fetchedAt)}
     </Muted>
   );
 }
