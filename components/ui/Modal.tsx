@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { SectionTitle } from "@/components/ui/Typography";
+
+const subscribe = () => () => {};
+function useIsMounted() {
+  return useSyncExternalStore(subscribe, () => true, () => false);
+}
 
 interface ModalProps {
   open: boolean;
@@ -15,13 +20,9 @@ interface ModalProps {
 }
 
 export default function Modal({ open, onClose, title, toolbar, children }: ModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const dialogRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<Element | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Lock body scroll while open
   useEffect(() => {
