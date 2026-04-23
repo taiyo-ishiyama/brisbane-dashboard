@@ -1,1 +1,124 @@
-{}
+{
+  "generatedAt": "2026-04-24T06:00:00.000Z",
+  "header": {
+    "city": "Brisbane",
+    "timezone": "Australia/Brisbane"
+  },
+  "emergency": {
+    "meta": { "source": "Queensland Disaster", "fetchedAt": "2026-04-24T06:00:00.000Z" },
+    "alerts": []
+  },
+  "bomWarnings": {
+    "meta": { "source": "BOM", "fetchedAt": "2026-04-24T06:00:00.000Z" },
+    "warnings": []
+  },
+  "weather": {
+    "meta": { "source": "open-meteo", "fetchedAt": "2026-04-24T06:00:00.000Z" },
+    "location": {
+      "name": "Brisbane",
+      "timezone": "Australia/Brisbane",
+      "point": { "lat": -27.47, "lon": 153.03 }
+    },
+    "days": [
+      { "date": "2026-04-24", "icon": "clear", "tempMaxC": 28, "tempMinC": 18, "precipitationChancePct": 10, "windMaxKph": 15 },
+      { "date": "2026-04-25", "icon": "partly_cloudy", "tempMaxC": 26, "tempMinC": 17, "precipitationChancePct": 20, "windMaxKph": 12 },
+      { "date": "2026-04-26", "icon": "rain", "tempMaxC": 22, "tempMinC": 16, "precipitationChancePct": 80, "windMaxKph": 25 },
+      { "date": "2026-04-27", "icon": "showers", "tempMaxC": 23, "tempMinC": 15, "precipitationChancePct": 60, "windMaxKph": 18 },
+      { "date": "2026-04-28", "icon": "cloudy", "tempMaxC": 24, "tempMinC": 16, "precipitationChancePct": 30, "windMaxKph": 14 },
+      { "date": "2026-04-29", "icon": "clear", "tempMaxC": 27, "tempMinC": 17, "precipitationChancePct": 5, "windMaxKph": 10 },
+      { "date": "2026-04-30", "icon": "partly_cloudy", "tempMaxC": 26, "tempMinC": 18, "precipitationChancePct": 15, "windMaxKph": 13 }
+    ]
+  },
+  "events": {
+    "meta": { "source": "BCC Events", "fetchedAt": "2026-04-24T06:00:00.000Z" },
+    "range": { "from": "2026-04-24", "to": "2026-05-01" },
+    "events": [
+      {
+        "id": "1001",
+        "title": "South Bank Markets",
+        "descriptionShort": "Browse artisan stalls at the riverside markets.",
+        "startAt": "2026-04-25T08:00:00+10:00",
+        "endAt": "2026-04-25T14:00:00+10:00",
+        "venueName": "Stanley Street Plaza",
+        "suburb": "South Brisbane",
+        "categories": ["markets"],
+        "isFree": true
+      },
+      {
+        "id": "1002",
+        "title": "Brisbane Jazz Festival",
+        "descriptionShort": "Live jazz performances across multiple venues.",
+        "startAt": "2026-04-26T18:00:00+10:00",
+        "venueName": "Brisbane Powerhouse",
+        "suburb": "New Farm",
+        "categories": ["music", "arts"],
+        "isFree": false
+      },
+      {
+        "id": "1003",
+        "title": "Family Fun Day",
+        "descriptionShort": "Free activities for kids and families in the park.",
+        "startAt": "2026-04-27T10:00:00+10:00",
+        "endAt": "2026-04-27T16:00:00+10:00",
+        "venueName": "Roma Street Parkland",
+        "suburb": "Brisbane City",
+        "categories": ["family", "community"],
+        "isFree": true
+      },
+      {
+        "id": "1004",
+        "title": "Tech Meetup Brisbane",
+        "descriptionShort": "Monthly meetup for local developers and designers.",
+        "startAt": "2026-04-28T18:30:00+10:00",
+        "venueName": "River City Labs",
+        "suburb": "Fortitude Valley",
+        "categories": ["tech"],
+        "isFree": true
+      }
+    ]
+  },
+  "traffic": {
+    "meta": { "source": "QLDTraffic", "fetchedAt": "2026-04-24T06:00:00.000Z" },
+    "incidents": [
+      {
+        "id": "t-001",
+        "type": "roadworks",
+        "severity": "minor",
+        "title": "Roadworks on Coronation Drive",
+        "description": "Lane closures between Toowong and Milton.",
+        "locationText": "Coronation Drive, Toowong"
+      },
+      {
+        "id": "t-002",
+        "type": "crash",
+        "severity": "moderate",
+        "title": "Multi-vehicle crash on M3",
+        "description": "Expect delays southbound.",
+        "locationText": "Pacific Motorway, Eight Mile Plains"
+      }
+    ]
+  },
+  "transit": {
+    "meta": { "source": "TransLink", "fetchedAt": "2026-04-24T06:00:00.000Z" },
+    "alerts": [
+      {
+        "id": "tr-001",
+        "severity": "moderate",
+        "headline": "Beenleigh line: reduced service",
+        "description": "Trains running every 30 minutes due to track maintenance.",
+        "modes": ["train"],
+        "routes": ["BEGY-4727"],
+        "sourceName": "TransLink"
+      },
+      {
+        "id": "tr-002",
+        "severity": "minor",
+        "headline": "Route 199: detour via Main Street",
+        "description": "Temporary detour due to road closure.",
+        "modes": ["bus"],
+        "routes": ["199-4730"],
+        "sourceName": "TransLink"
+      }
+    ]
+  }
+}
