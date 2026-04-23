@@ -25,17 +25,18 @@ export interface BccEventsResponse {
   results: BccEventRecord[];
 }
 
-function extractEventId(webLink?: string): string {
-  if (!webLink) return crypto.randomUUID();
+function extractEventId(webLink?: string): string | undefined {
+  if (!webLink) return undefined;
   const match = webLink.match(/eventid%3d(\d+)/i);
-  return match ? match[1] : crypto.randomUUID();
+  return match?.[1];
 }
 
 function slugify(text: string): string {
-  return text
+  const slug = text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+  return slug || "event";
 }
 
 function buildEventUrl(title: string, eventId: string): string {
@@ -78,7 +79,8 @@ function truncateDescription(desc?: string, maxLen = 150): string | undefined {
 }
 
 function toRecord(record: BccEventRecord): EventItem {
-  const id = extractEventId(record.web_link);
+  const parsedId = extractEventId(record.web_link);
+  const id = parsedId ?? crypto.randomUUID();
   return {
     id,
     title: record.subject,
@@ -91,7 +93,11 @@ function toRecord(record: BccEventRecord): EventItem {
     point: record.geolocation
       ? { lat: record.geolocation.lat, lon: record.geolocation.lon }
       : undefined,
-    sourceUrl: record.web_link ? buildEventUrl(record.subject, id) : undefined,
+    sourceUrl: record.web_link
+      ? parsedId
+        ? buildEventUrl(record.subject, parsedId)
+        : record.web_link
+      : undefined,
     categories: mapCategories(record),
     isFree: isFree(record.cost),
     imageUrl: record.eventimage ?? undefined,

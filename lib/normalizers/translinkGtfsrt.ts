@@ -58,10 +58,12 @@ function mapRouteType(routeType: number): TransitMode {
 const TRAIN_PREFIX_RE = /^[A-Z]{2,4}-/;
 const BUS_PREFIX_RE = /^(?:\d|R\d)/;
 const TRAM_PREFIX_RE = /^M\d/;
+const FERRY_PREFIX_RE = /^(?:F-|5\d{2})/;
 
 function inferModeFromRouteId(routeId: string): TransitMode | undefined {
   if (TRAIN_PREFIX_RE.test(routeId)) return "train";
   if (TRAM_PREFIX_RE.test(routeId)) return "tram";
+  if (FERRY_PREFIX_RE.test(routeId)) return "ferry";
   if (BUS_PREFIX_RE.test(routeId)) return "bus";
   return undefined;
 }

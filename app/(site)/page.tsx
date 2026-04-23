@@ -18,7 +18,7 @@ export default function HomePage() {
       <main className="mx-auto max-w-6xl space-y-8 px-4 py-6 sm:px-6">
         {isLoading && <LoadingSkeleton />}
 
-        {isError && (
+        {isError && !feed && (
           <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center">
             <p className="text-red-800">
               Failed to load dashboard data. Please try again.
@@ -28,6 +28,18 @@ export default function HomePage() {
               className="mt-3 rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
             >
               Retry
+            </button>
+          </div>
+        )}
+
+        {isError && feed && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-center text-sm text-amber-800">
+            Showing the last successful update. Refresh failed —{" "}
+            <button
+              onClick={() => refetch()}
+              className="underline hover:text-amber-900"
+            >
+              retry
             </button>
           </div>
         )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
@@ -15,25 +15,85 @@ interface ModalProps {
 }
 
 export default function Modal({ open, onClose, title, toolbar, children }: ModalProps) {
+  const [mounted, setMounted] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<Element | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Lock body scroll while open
   useEffect(() => {
-    if (!open) return;
+    if (!mounted || !open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [open]);
+  }, [mounted, open]);
 
   // Close on Escape
   useEffect(() => {
-    if (!open) return;
+    if (!mounted || !open) return;
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [open, onClose]);
+  }, [mounted, open, onClose]);
+
+  // Focus management: move focus into modal, trap it, restore on close
+  useEffect(() => {
+    if (!mounted || !open) return;
+
+    previousFocusRef.current = document.activeElement;
+    const dialog = dialogRef.current;
+    if (dialog) {
+      const firstFocusable = dialog.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (firstFocusable) firstFocusable.focus();
+      else dialog.focus();
+    }
+
+    return () => {
+      if (previousFocusRef.current instanceof HTMLElement) {
+        previousFocusRef.current.focus();
+      }
+    };
+  }, [mounted, open]);
+
+  // Trap Tab / Shift+Tab within modal
+  useEffect(() => {
+    if (!mounted || !open) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    function handleTab(e: KeyboardEvent) {
+      if (e.key !== "Tab") return;
+      const focusable = dialog!.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    dialog.addEventListener("keydown", handleTab);
+    return () => dialog.removeEventListener("keydown", handleTab);
+  }, [mounted, open]);
+
+  if (!mounted) return null;
 
   return createPortal(
     <AnimatePresence>
@@ -54,10 +114,12 @@ export default function Modal({ open, onClose, title, toolbar, children }: Modal
 
           {/* Panel */}
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal
             aria-label={title}
-            className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl"
+            tabIndex={-1}
+            className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl outline-none"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
