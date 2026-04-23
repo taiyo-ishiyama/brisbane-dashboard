@@ -120,27 +120,27 @@ export default function Modal({ open, onClose, title, toolbar, children }: Modal
             aria-modal
             aria-label={title}
             tabIndex={-1}
-            className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-xl outline-none"
+            className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-stone-200/60 bg-white shadow-xl outline-none"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+            <div className="flex items-center justify-between border-b border-stone-200 px-6 py-4">
               <SectionTitle>{title}</SectionTitle>
               <button
                 onClick={onClose}
                 aria-label="Close"
-                className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                className="rounded-lg p-1.5 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600"
               >
-                <X className="h-5 w-5" />
+                <X className="size-5" />
               </button>
             </div>
 
             {/* Toolbar (fixed) */}
             {toolbar && (
-              <div className="border-b border-slate-100 px-6 py-4">
+              <div className="border-b border-stone-100 px-6 py-4">
                 {toolbar}
               </div>
             )}

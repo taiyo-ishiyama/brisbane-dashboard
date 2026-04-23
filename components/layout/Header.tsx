@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { PageTitle, Body } from "@/components/ui/Typography";
 
 function useBrisbaneClock() {
@@ -30,15 +31,24 @@ export default function Header() {
   const time = useBrisbaneClock();
 
   return (
-    <header className="bg-white border-b border-slate-200">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <PageTitle>Brisbane Local Dashboard</PageTitle>
-        <div className="flex items-center gap-2 text-sm text-slate-600">
-          <Body as="span" className="hidden sm:inline text-slate-600!">
-            Brisbane time&nbsp;&mdash;
+    <header className="border-b border-stone-200/60 bg-white sticky top-0 z-30 pt-[env(safe-area-inset-top)]">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 sm:px-6">
+        <div className="flex items-center gap-3">
+          <Image
+            src="/logo.png"
+            alt="Brisbane Local Dashboard logo"
+            width={48}
+            height={48}
+            className="size-12"
+          />
+          <PageTitle>Brisbane Local Dashboard</PageTitle>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-stone-500">
+          <Body as="span" className="hidden sm:inline text-stone-400!">
+            Brisbane&nbsp;&mdash;
           </Body>
-          <span className="inline-flex items-center gap-1.5 font-mono font-medium tabular-nums text-slate-900">
-            <span className="h-2 w-2 rounded-full bg-primary-500" />
+          <span className="inline-flex items-center gap-1.5 font-mono text-sm font-medium tabular-nums text-stone-900">
+            <span className="size-1.5 rounded-full bg-primary-500" />
             {time}
           </span>
         </div>

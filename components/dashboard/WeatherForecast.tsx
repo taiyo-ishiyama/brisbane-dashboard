@@ -33,14 +33,14 @@ const weatherIcons: Record<WeatherIcon, React.ComponentType<{ className?: string
 const weatherIconColours: Record<WeatherIcon, string> = {
   clear: "text-amber-400",
   partly_cloudy: "text-amber-300",
-  cloudy: "text-slate-400",
-  fog: "text-slate-400",
-  rain: "text-blue-400",
-  showers: "text-blue-300",
+  cloudy: "text-stone-400",
+  fog: "text-stone-400",
+  rain: "text-sky-400",
+  showers: "text-sky-300",
   storm: "text-indigo-500",
   hail: "text-cyan-500",
   wind: "text-teal-400",
-  unknown: "text-slate-300",
+  unknown: "text-stone-300",
 };
 
 function isToday(dateStr: string) {
@@ -72,18 +72,18 @@ function DayCard({ day }: { day: ForecastDay }) {
 
   return (
     <div
-      className={`flex min-w-[100px] flex-col items-center rounded-xl border px-4 py-4 transition-shadow ${
+      className={`flex min-w-[104px] flex-col items-center rounded-xl border px-4 py-4 transition-shadow ${
         today
-          ? "border-primary-300 bg-primary-50 shadow-md ring-2 ring-primary-200"
-          : "border-slate-200 bg-white hover:shadow-sm"
+          ? "border-primary-300 bg-primary-50/60 shadow-sm ring-1 ring-primary-200"
+          : "border-stone-200/60 bg-white hover:shadow-sm"
       }`}
     >
-      <Caption className={`font-semibold! ${today ? "text-primary-600!" : "text-slate-500!"}`}>
+      <Caption className={`font-semibold! ${today ? "text-primary-700!" : "text-stone-500!"}`}>
         {today ? "Today" : dayName}
       </Caption>
-      <Tiny>{date}</Tiny>
+      <Tiny className="tabular-nums">{date}</Tiny>
 
-      <Icon className={`my-3 h-8 w-8 ${iconColour}`} />
+      <Icon className={`my-3 size-8 ${iconColour}`} />
 
       <div className="flex items-baseline gap-1">
         <Display>{Math.round(day.tempMaxC)}&deg;</Display>
@@ -91,15 +91,15 @@ function DayCard({ day }: { day: ForecastDay }) {
       </div>
 
       {day.precipitationChancePct != null && day.precipitationChancePct > 0 && (
-        <Caption className="mt-1 inline-flex items-center gap-0.5 text-blue-500!">
-          <Droplets className="h-3 w-3" />
+        <Caption className="mt-1.5 inline-flex items-center gap-0.5 text-sky-500! tabular-nums">
+          <Droplets className="size-3" />
           {day.precipitationChancePct}%
         </Caption>
       )}
 
       {day.windMaxKph != null && (
-        <Tiny className="mt-0.5 inline-flex items-center gap-0.5">
-          <Wind className="h-3 w-3" />
+        <Tiny className="mt-0.5 inline-flex items-center gap-0.5 tabular-nums">
+          <Wind className="size-3" />
           {Math.round(day.windMaxKph)} km/h
         </Tiny>
       )}
@@ -115,7 +115,7 @@ export default function WeatherForecast({ data }: WeatherForecastProps) {
   return (
     <Section
       title="7-Day Forecast"
-      icon={<CloudSun className="h-5 w-5 text-amber-400" />}
+      icon={<CloudSun className="size-5 text-amber-400" />}
       fetchedAt={data.meta.fetchedAt}
     >
       <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
