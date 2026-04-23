@@ -4,7 +4,9 @@ import { fetchEvents } from "@/lib/services/events.service";
 import { upsertSnapshot } from "@/lib/db/snapshots.repo";
 import { Section } from "@/config/constants";
 
-export async function POST(request: Request) {
+export { handler as GET, handler as POST };
+
+async function handler(request: Request) {
   const unauthorized = verifyCronSecret(request);
   if (unauthorized) return unauthorized;
 

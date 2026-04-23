@@ -1,0 +1,21 @@
+name: Hourly cron
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger hourly cron endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "${{ secrets.DEPLOY_URL }}/api/cron/hourly" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}")
+          echo "HTTP status: $response"
+          if [ "$response" -ge 400 ]; then
+            echo "::error::Cron endpoint returned $response"
+            exit 1
+          fi
