@@ -8,8 +8,6 @@ import {
   Ship,
   TramFront,
   AlertCircle,
-  ChevronDown,
-  ChevronUp,
   ExternalLink,
   ShieldCheck,
 } from "lucide-react";
@@ -18,6 +16,7 @@ import type { TransitAlertsFeed, TransitAlert, TransitMode } from "@/types/trans
 import type { Severity } from "@/types/dashboard";
 import { SubsectionTitle, BodyMedium, Body, Caption, Tiny, Label } from "@/components/ui/Typography";
 import Section from "@/components/layout/Section";
+import Modal from "@/components/ui/Modal";
 
 /* ---------- shared ---------- */
 
@@ -55,10 +54,8 @@ function TrafficItem({ item }: { item: TrafficIncident }) {
 }
 
 function TrafficColumn({ data }: { data: TrafficIncidentsFeed }) {
-  const [expanded, setExpanded] = useState(false);
-  const items = expanded
-    ? data.incidents
-    : data.incidents.slice(0, TRAFFIC_INITIAL);
+  const [modalOpen, setModalOpen] = useState(false);
+  const preview = data.incidents.slice(0, TRAFFIC_INITIAL);
   const hasMore = data.incidents.length > TRAFFIC_INITIAL;
 
   return (
@@ -76,28 +73,31 @@ function TrafficColumn({ data }: { data: TrafficIncidentsFeed }) {
       ) : (
         <>
           <div className="space-y-2">
-            {items.map((item) => (
+            {preview.map((item) => (
               <TrafficItem key={item.id} item={item} />
             ))}
           </div>
 
           {hasMore && (
             <button
-              onClick={() => setExpanded(!expanded)}
+              onClick={() => setModalOpen(true)}
               className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary-600 hover:text-primary-700"
             >
-              {expanded ? (
-                <>
-                  Show less <ChevronUp className="h-3 w-3" />
-                </>
-              ) : (
-                <>
-                  View all traffic ({data.incidents.length}){" "}
-                  <ChevronDown className="h-3 w-3" />
-                </>
-              )}
+              View all incidents ({data.incidents.length})
             </button>
           )}
+
+          <Modal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            title={`Traffic Incidents (${data.incidents.length})`}
+          >
+            <div className="space-y-2">
+              {data.incidents.map((item) => (
+                <TrafficItem key={item.id} item={item} />
+              ))}
+            </div>
+          </Modal>
         </>
       )}
     </div>
@@ -130,7 +130,37 @@ const modeColours: Record<TransitMode, string> = {
   other: "bg-slate-50 text-slate-600 border-slate-200",
 };
 
+function TransitAlertItem({ alert }: { alert: TransitAlert }) {
+  return (
+    <div className="flex items-start gap-3 rounded-lg border border-slate-100 bg-white px-3 py-2.5">
+      <span
+        className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${severityDot[alert.severity]}`}
+      />
+      <div className="min-w-0 flex-1">
+        <BodyMedium>{alert.headline}</BodyMedium>
+        {alert.description && alert.description !== alert.headline && (
+          <Caption as="p" className="mt-0.5 line-clamp-3">
+            {alert.description}
+          </Caption>
+        )}
+        {alert.sourceUrl && (
+          <a
+            href={alert.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary-600 hover:text-primary-700"
+          >
+            Details <ExternalLink className="h-3 w-3" />
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function TransitColumn({ data }: { data: TransitAlertsFeed }) {
+  const [modalMode, setModalMode] = useState<TransitMode | null>(null);
+
   /* Collect unique modes from alerts */
   const displayModes: TransitMode[] = ["train", "bus", "ferry", "tram"];
   const alertsByMode = displayModes.reduce(
@@ -145,6 +175,9 @@ function TransitColumn({ data }: { data: TransitAlertsFeed }) {
   const alertCount = data.alerts.filter((a) =>
     a.modes?.some((m) => displayModes.includes(m))
   ).length;
+
+  const modalAlerts = modalMode ? alertsByMode[modalMode] : [];
+  const ModalIcon = modalMode ? modeIcons[modalMode] : null;
 
   return (
     <div>
@@ -163,9 +196,10 @@ function TransitColumn({ data }: { data: TransitAlertsFeed }) {
           const Icon = modeIcons[mode];
           const count = alertsByMode[mode].length;
           return (
-            <div
+            <button
               key={mode}
-              className={`flex flex-col items-center gap-1.5 rounded-lg border p-3 ${modeColours[mode]}`}
+              onClick={() => count > 0 && setModalMode(mode)}
+              className={`flex flex-col items-center gap-1.5 rounded-lg border p-3 transition-shadow ${modeColours[mode]} ${count > 0 ? "cursor-pointer hover:shadow-md" : "cursor-default"}`}
             >
               <Icon className="h-6 w-6" />
               <Caption className="font-medium!">{modeLabels[mode]}</Caption>
@@ -174,7 +208,7 @@ function TransitColumn({ data }: { data: TransitAlertsFeed }) {
                   {count} alert{count !== 1 ? "s" : ""}
                 </Label>
               )}
-            </div>
+            </button>
           );
         })}
       </div>
@@ -187,6 +221,24 @@ function TransitColumn({ data }: { data: TransitAlertsFeed }) {
       >
         Plan your journey <ExternalLink className="h-3 w-3" />
       </a>
+
+      <Modal
+        open={modalMode !== null}
+        onClose={() => setModalMode(null)}
+        title={modalMode ? `${modeLabels[modalMode]} Alerts (${modalAlerts.length})` : ""}
+      >
+        {modalAlerts.length > 0 ? (
+          <div className="space-y-2">
+            {modalAlerts.map((alert) => (
+              <TransitAlertItem key={alert.id} alert={alert} />
+            ))}
+          </div>
+        ) : (
+          <Body className="py-8 text-center text-slate-400!">
+            No alerts for this mode.
+          </Body>
+        )}
+      </Modal>
     </div>
   );
 }
