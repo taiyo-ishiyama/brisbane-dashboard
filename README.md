@@ -69,7 +69,7 @@ brisbane-dashboard/
 │   ├── unit/             # Vitest tests
 │   └── fixtures/         # Sample data for tests
 ├── supabase/             # Migrations and seeds
-└── .github/workflows/    # CI, E2E, hourly cron
+└── .github/workflows/    # CI, E2E, daily + hourly cron
 ```
 
 ## Environment Variables

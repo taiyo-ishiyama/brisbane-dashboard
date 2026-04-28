@@ -1,5 +1,13 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import feedFixture from "../fixtures/feed.sample.json";
+
+/** Navigate to the page and wait for the splash screen to dismiss. */
+async function gotoDashboard(page: Page, path = "/") {
+  await page.goto(path);
+  // Splash screen has duration=2500ms + 400ms fade-out
+  await expect(page.getByTestId("splash-overlay")).toBeHidden({ timeout: 10_000 });
+  await expect(page.getByTestId("app-content")).toBeVisible({ timeout: 10_000 });
+}
 
 test.beforeEach(async ({ page }) => {
   // Mock /api/feed to return fixture data
@@ -14,7 +22,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe("Dashboard page", () => {
   test("loads and displays all sections", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     // Header
     await expect(page.getByRole("heading", { name: /brisbane local dashboard/i })).toBeVisible();
@@ -41,7 +49,7 @@ test.describe("Dashboard page", () => {
   });
 
   test("shows weather forecast cards with temperatures", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     // Check temperature values render
     await expect(page.getByText("28°")).toBeVisible();
@@ -49,14 +57,14 @@ test.describe("Dashboard page", () => {
   });
 
   test("shows traffic incidents", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     await expect(page.getByText("Roadworks on Coronation Drive")).toBeVisible();
     await expect(page.getByText("Multi-vehicle crash on M3")).toBeVisible();
   });
 
   test("shows transit alerts by mode", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     // Train and bus mode buttons should be visible
     await expect(page.getByText("Train")).toBeVisible();
@@ -68,7 +76,7 @@ test.describe("Dashboard page", () => {
   });
 
   test("events 'View all' opens modal with filters", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     // Click "View all events"
     await page.getByRole("button", { name: /view all events/i }).click();
@@ -92,7 +100,7 @@ test.describe("Dashboard page", () => {
   });
 
   test("events search filters results", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     await page.getByRole("button", { name: /view all events/i }).click();
     await page.getByPlaceholder("Search events...").fill("jazz");
@@ -102,7 +110,7 @@ test.describe("Dashboard page", () => {
   });
 
   test("'No active alerts' renders when alerts are empty", async ({ page }) => {
-    await page.goto("/");
+    await gotoDashboard(page);
 
     await expect(page.getByText(/no active emergency alerts/i)).toBeVisible();
   });
@@ -113,7 +121,7 @@ test.describe("Dashboard page", () => {
       route.fulfill({ status: 500, body: '{"error":"fail"}' }),
     );
 
-    await page.goto("/");
+    await gotoDashboard(page);
 
     await expect(page.getByText(/failed to load dashboard data/i)).toBeVisible();
     await expect(page.getByRole("button", { name: /retry/i })).toBeVisible();

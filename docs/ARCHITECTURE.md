@@ -34,7 +34,7 @@ The dashboard page is a single client component. All data fetching happens throu
 
 ### Daily Job (`/api/cron/daily`)
 
-Scheduled via Vercel Cron at 06:00 UTC (16:00 AEST).
+Scheduled via GitHub Actions cron at 06:00 UTC (16:00 AEST).
 
 | Source | Normaliser | Output |
 |--------|------------|--------|
@@ -56,7 +56,7 @@ All fetches run in parallel via `Promise.allSettled`. Partial failures don't blo
 
 ### Security
 
-Cron endpoints require an `x-cron-secret` header matching the `CRON_SECRET` env var. Vercel Cron sends this automatically; the GitHub Actions workflow reads it from repository secrets.
+Cron endpoints require an `x-cron-secret` header matching the `CRON_SECRET` env var. The GitHub Actions workflows read it from repository secrets and send it on each request.
 
 ## Normaliser Architecture
 
