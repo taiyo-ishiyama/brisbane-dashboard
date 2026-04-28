@@ -5,18 +5,8 @@ import feedFixture from "../fixtures/feed.sample.json";
 async function gotoDashboard(page: Page, path = "/") {
   await page.goto(path);
   // Splash screen has duration=2500ms + 400ms fade-out
-  await expect(page.getByRole("dialog", { name: /splash/i })).toBeHidden({ timeout: 10_000 }).catch(() => {});
-  // Wait for the dashboard content to become visible (splash hides it via visibility:hidden)
-  await page.waitForFunction(
-    () => {
-      const main = document.querySelector("main");
-      if (!main) return false;
-      const wrapper = main.closest("div[style]");
-      return wrapper ? getComputedStyle(wrapper).visibility !== "hidden" : true;
-    },
-    null,
-    { timeout: 10_000 },
-  );
+  await expect(page.getByTestId("splash-overlay")).toBeHidden({ timeout: 10_000 });
+  await expect(page.getByTestId("app-content")).toBeVisible({ timeout: 10_000 });
 }
 
 test.beforeEach(async ({ page }) => {

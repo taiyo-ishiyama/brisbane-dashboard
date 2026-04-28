@@ -13,6 +13,7 @@ export function SplashProvider({ children }: { children: ReactNode }) {
         onComplete={() => setIsLoading(false)}
       />
       <div
+        data-testid="app-content"
         style={{
           visibility: isLoading ? "hidden" : "visible",
           opacity: isLoading ? 0 : 1,

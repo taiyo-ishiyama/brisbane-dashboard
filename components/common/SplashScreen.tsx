@@ -29,6 +29,10 @@ export function SplashScreen({ onComplete, duration = 2800 }: SplashScreenProps)
     <AnimatePresence>
       {isVisible && (
         <motion.div
+          data-testid="splash-overlay"
+          role="dialog"
+          aria-label="Splash screen"
+          aria-modal="true"
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-surface"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}

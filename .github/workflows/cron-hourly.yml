@@ -11,11 +11,12 @@ jobs:
     steps:
       - name: Trigger hourly cron endpoint
         run: |
+          set -e
           response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
             "${{ secrets.DEPLOY_URL }}/api/cron/hourly" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}")
           echo "HTTP status: $response"
-          if [ "$response" -ge 400 ]; then
+          if [ "$response" = "000" ] || [ "$response" -ge 400 ]; then
             echo "::error::Cron endpoint returned $response"
             exit 1
           fi
