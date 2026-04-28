@@ -1,0 +1,21 @@
+name: Daily cron
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger daily cron endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "${{ secrets.DEPLOY_URL }}/api/cron/daily" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}")
+          echo "HTTP status: $response"
+          if [ "$response" -ge 400 ]; then
+            echo "::error::Cron endpoint returned $response"
+            exit 1
+          fi
